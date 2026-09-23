@@ -1,12 +1,13 @@
 # Home Assistant 集成合集
 
-本项目集中存放 5 个自研的 Home Assistant 自定义集成，主要面向国内常见的 485 网转串 / TCP 智能硬件设备，以及涂鸦（Tuya）云灯组。
+本项目集中存放 6 个自研的 Home Assistant 自定义集成，主要面向国内常见的 485 网转串 / TCP 智能硬件设备，以及涂鸦（Tuya）云灯组。
 
 ## 集成列表
 
 | 目录 | 集成名称 | 说明 | 通信方式 |
 |---|---|---|---|
 | `custom_components/forick_k7x` | 八键智能开关 (Forick) | 八键面板 + 4 继电器，支持按键实时反馈、红外人体感应 | 本地 TCP (Modbus RTU over TCP) |
+| `custom_components/forick_panel` | 三合一温控面板 (Forick) | 空调 / 地暖 / 新风三合一面板，支持温度、风速、模式控制与实时反馈 | 本地 TCP (Modbus RTU over TCP) |
 | `custom_components/tcp_relay` | TCP 继电器 (CORX) | 通用 TCP 继电器开关控制 | 本地 TCP (Modbus RTU over TCP) |
 | `custom_components/smart_lighting_485` | TCP 可控硅调光 (CNHQ) | 485 可控硅调光，多通道亮度控制 | 本地 TCP (Modbus RTU over TCP) |
 | `custom_components/tuya_cloud_groups` | Tuya Cloud Groups | 涂鸦云灯组（按账号家庭自动同步） | 涂鸦开放平台 API（云） |
@@ -18,16 +19,16 @@
 
 将需要的集成目录复制到 Home Assistant 的 `custom_components/` 目录下，然后重启 HA 并在「设置 → 设备与服务」中添加集成。
 
-例如安装八键智能开关：
+例如安装三合一温控面板：
 
 ```bash
 # 假设已 clone 本仓库到本地
-cp -r custom_components/forick_k7x /config/custom_components/
+cp -r custom_components/forick_panel /config/custom_components/
 ```
 
 ### 方式二：HACS
 
-> ⚠️ HACS 的自定义仓库「一个仓库只识别一个集成」。本仓库是 monorepo，含 5 个集成，**HACS 直接添加整个仓库只会识别根目录下的一个集成**。
+> ⚠️ HACS 的自定义仓库「一个仓库只识别一个集成」。本仓库是 monorepo，含 6 个集成，**HACS 直接添加整个仓库只会识别根目录下的一个集成**。
 >
 > 如需通过 HACS 安装，建议：
 > - 在 HACS 中以「自定义仓库」添加本仓库，类型选 **Integration**，仓库路径填写对应集成的子目录；或
