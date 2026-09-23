@@ -1,0 +1,39 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya Cloud Groups",
+        "description": "填入涂鸦云 OpenAPI 的 Access ID / Access Secret 即可。保存后会自动同步账号下全部家庭的灯组（一个账号只有一个家庭时无需填任何 ID）。",
+        "data": {
+          "client_id": "Access ID / Client ID",
+          "client_secret": "***",
+          "user_id": "涂鸦用户 UID（可选，留空自动识别）",
+          "region": "数据中心"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "连接失败：请检查 Access ID / Secret 或数据中心",
+      "no_groups": "没有找到任何灯组：请先在涂鸦 App 里创建灯组",
+      "unknown": "未知错误"
+    },
+    "abort": {
+      "already_configured": "该 Access ID 已配置"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "灯组同步设置（一般不用改）",
+        "description": "默认自动同步账号下全部家庭的灯组。仅在需要时才填写下面的覆盖项。",
+        "data": {
+          "scan_interval": "轮询间隔（秒）",
+          "group_names": "灯组名称覆盖（15913033=主卧调光组，逗号分隔）",
+          "space_id": "仅同步指定家庭（可选，留空=全部）",
+          "group_ids": "仅同步指定灯组（可选，逗号分隔，留空=全部）",
+          "excluded_groups": "已移除的灯组（隐藏，逗号分隔）"
+        }
+      }
+    }
+  }
+}

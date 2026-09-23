@@ -1,0 +1,11 @@
+{
+  "domain": "tcp_relay",
+  "name": "TCP继电器(CORX)",
+  "version": "1.0.0",
+  "documentation": "http://www.hfznjj.cn/",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": [],
+  "iot_class": "local_polling",
+  "config_flow": true
+}

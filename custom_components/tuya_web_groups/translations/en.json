@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya WebGroups",
+        "description": "Paste the browser cookie from the Tuya Smart web app (cn.device.tuyasmart.com). This is a **session ticket** and has to be refreshed when it expires.\n\nHow to get it: sign in at https://cn.device.tuyasmart.com → F12 → Network → any request → copy the full Cookie header.\n\nLeave Home ID empty to pick a home in the next step.",
+        "data": {
+          "cookie": "Browser cookie",
+          "home_id": "Home ID (optional)",
+          "micro_app_id": "Micro-app ID (usually fine as-is)"
+        }
+      },
+      "home": {
+        "title": "Choose a home",
+        "description": "This account owns several homes; pick the one whose light groups you want to sync.",
+        "data": {
+          "home_id": "Home"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Cookie invalid or expired: sign in again and copy a fresh cookie",
+      "no_home": "This account has no home",
+      "no_groups": "No light groups in this home: create one in the Tuya App first",
+      "unknown": "Unknown error"
+    },
+    "abort": {
+      "already_configured": "This home is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tuya WebGroups options",
+        "description": "Refresh the cookie here once it expires. Leave group IDs empty to sync every light group of the home.",
+        "data": {
+          "cookie": "Browser cookie (refresh)",
+          "scan_interval": "Poll interval (seconds)",
+          "group_names": "Name overrides (15937243=Test group, comma separated)",
+          "group_ids": "Only these groups (optional, comma separated)",
+          "excluded_groups": "Removed groups (hidden, comma separated)"
+        }
+      }
+    }
+  }
+}

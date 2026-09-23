@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya Cloud Groups",
+        "description": "输入涂鸦云 OpenAPI 凭证（从 localtuya 的 configure_cloud 步骤可获取未打码版本）",
+        "data": {
+          "client_id": "Client ID",
+          "client_secret": "Client Secret",
+          "user_id": "涂鸦用户 UID",
+          "name": "名称",
+          "region": "区域"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "连接失败：请检查凭证或区域",
+      "unknown": "未知错误"
+    },
+    "abort": {
+      "already_configured": "该账号已配置"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "灯组同步设置",
+        "description": "留空「灯组 ID」则自动从场景/自动化中发现；也可手工填组 ID（逗号分隔）",
+        "data": {
+          "home_id": "家庭 ID（用于自动发现）",
+          "group_ids": "灯组 ID（逗号分隔，可空）",
+          "scan_interval": "轮询间隔（秒）",
+          "excluded_groups": "已移除的灯组（隐藏，逗号分隔）"
+        }
+      }
+    }
+  }
+}

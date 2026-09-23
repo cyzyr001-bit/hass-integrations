@@ -1,0 +1,6 @@
+{
+  "name": "TCP 继电器 (CORX)",
+  "content_in_root": false,
+  "country": "CN",
+  "homeassistant": "2023.1.0"
+}

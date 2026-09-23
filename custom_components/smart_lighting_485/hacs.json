@@ -1,0 +1,6 @@
+{
+  "name": "TCP 可控硅调光 (CNHQ)",
+  "content_in_root": false,
+  "country": "CN",
+  "homeassistant": "2023.1.0"
+}

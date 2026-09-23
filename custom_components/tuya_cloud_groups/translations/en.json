@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya Cloud Groups",
+        "description": "Enter Tuya OpenAPI credentials (the unmasked values are available via localtuya's configure_cloud step).",
+        "data": {
+          "client_id": "Client ID",
+          "client_secret": "Client Secret",
+          "user_id": "Tuya User ID",
+          "name": "Name",
+          "region": "Region"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Connection failed: check credentials / region",
+      "unknown": "Unknown error"
+    },
+    "abort": {
+      "already_configured": "Account already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Light group sync",
+        "description": "Leave group IDs empty to auto-discover from scenes/automations, or list group IDs comma-separated.",
+        "data": {
+          "home_id": "Home ID (for auto-discovery)",
+          "group_ids": "Group IDs (comma-separated, optional)",
+          "scan_interval": "Poll interval (seconds)",
+          "excluded_groups": "Removed groups (hidden, comma separated)"
+        }
+      }
+    }
+  }
+}

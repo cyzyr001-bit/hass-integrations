@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tuya WebGroups",
+        "description": "粘贴涂鸦智能网页版（cn.device.tuyasmart.com）的浏览器 Cookie。这是**会话票据**，过期后需要重新获取。\n\n获取方法：登录 https://cn.device.tuyasmart.com → F12 → 网络 → 任意请求 → 复制完整 Cookie 请求头。\n\n家庭 ID 留空 = 下一步选择家庭。",
+        "data": {
+          "cookie": "浏览器 Cookie",
+          "home_id": "家庭 ID（可选，留空则下一步选择）",
+          "micro_app_id": "微应用 ID（一般不用改）"
+        }
+      },
+      "home": {
+        "title": "选择家庭",
+        "description": "该账号下有多个家庭，请选择要同步灯组的家庭。",
+        "data": {
+          "home_id": "家庭"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Cookie 无效或已过期：请重新登录网页版后复制新的 Cookie",
+      "no_home": "该账号下没有家庭",
+      "no_groups": "该家庭下没有灯组：请先在涂鸦 App 里创建灯组",
+      "unknown": "未知错误"
+    },
+    "abort": {
+      "already_configured": "该家庭已配置"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tuya WebGroups 设置",
+        "description": "Cookie 过期时在此更新。留空「灯组 ID」= 同步该家庭全部灯组。",
+        "data": {
+          "cookie": "浏览器 Cookie（更新用）",
+          "scan_interval": "轮询间隔（秒）",
+          "group_names": "灯组名称覆盖（15937243=主卧测试组，逗号分隔）",
+          "group_ids": "仅同步指定灯组（可选，逗号分隔）",
+          "excluded_groups": "已移除的灯组（隐藏，逗号分隔）"
+        }
+      }
+    }
+  }
+}

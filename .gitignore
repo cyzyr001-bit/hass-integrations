@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地敏感配置（token / 密钥）
+/tmp/
+*.token
+secrets*.md
+secrets*.yaml
+*.secret

@@ -1,0 +1,11 @@
+{
+  "domain": "smart_lighting_485",
+  "name": "TCP可控硅(CNHQ)",
+  "version": "1.2.0",
+  "documentation": "http://www.hfznjj.cn/",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": [],
+  "iot_class": "local_polling",
+  "config_flow": true
+}

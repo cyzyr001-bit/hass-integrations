@@ -1,0 +1,13 @@
+{
+  "domain": "tuya_cloud_groups",
+  "name": "Tuya Cloud Groups",
+  "version": "1.0.0",
+  "documentation": "https://github.com/openclaw/tuya-cloud-groups",
+  "issue_tracker": "https://github.com/openclaw/tuya-cloud-groups/issues",
+  "dependencies": [],
+  "codeowners": ["@openclaw"],
+  "requirements": [],
+  "iot_class": "cloud_polling",
+  "config_flow": true,
+  "integration_type": "hub"
+}
