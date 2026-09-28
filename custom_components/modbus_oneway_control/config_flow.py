@@ -18,7 +18,9 @@ from .const import (
     CONF_BAUD,
     CONF_DEVICE,
     CONF_NAME,
+    CONF_PERSISTENT,
     DEFAULT_BAUD,
+    DEFAULT_PERSISTENT,
     DEFAULT_TITLE,
     DOMAIN,
 )
@@ -77,6 +79,9 @@ class ModbusOnewayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         CONF_DEVICE: device,
                         CONF_BAUD: user_input[CONF_BAUD],
                         CONF_NAME: name,
+                        CONF_PERSISTENT: bool(
+                            user_input.get(CONF_PERSISTENT, DEFAULT_PERSISTENT)
+                        ),
                     },
                 )
         schema = vol.Schema(
@@ -84,6 +89,7 @@ class ModbusOnewayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_DEVICE): str,
                 vol.Optional(CONF_BAUD, default=DEFAULT_BAUD): vol.In(BAUD_RATES),
                 vol.Optional(CONF_NAME, default=""): str,
+                vol.Optional(CONF_PERSISTENT, default=DEFAULT_PERSISTENT): bool,
             }
         )
         return self.async_show_form(
@@ -127,6 +133,10 @@ class ModbusOnewayOptionsFlow(config_entries.OptionsFlow):
                     CONF_NAME,
                     default=data.get(CONF_NAME, _default_name(data.get(CONF_DEVICE, ""))),
                 ): str,
+                vol.Optional(
+                    CONF_PERSISTENT,
+                    default=bool(data.get(CONF_PERSISTENT, DEFAULT_PERSISTENT)),
+                ): bool,
             }
         )
         return self.async_show_form(

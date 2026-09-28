@@ -3,11 +3,12 @@
     "step": {
       "user": {
         "title": "Modbus One-Way Control",
-        "description": "**Add this integration once per device.** Enter a serial device path (e.g. /dev/ttyUSB0) or a **TCP address (e.g. tcp://192.168.110.158:6677)**.\n\nWith `tcp://` it sends over a **TCP client** connection (baud rate is ignored); with a path it uses the USB serial port.\n\nSwitches (`channels`) and buttons (`buttons`) go in /homeassistant/configuration.yaml under modbus_oneway_control:.",
+        "description": "**Add this integration once per device.** Enter a serial device path (e.g. /dev/ttyUSB0) or a **TCP address (e.g. tcp://192.168.110.158:6677)**.\n\nWith `tcp://` it communicates over **TCP** (baud rate is ignored): by default it **keeps a persistent connection** (auto-reconnects if dropped; can be turned off in options to connect-send-close). A path uses the USB serial port.\n\nSwitches (`channels`) and buttons (`buttons`) go in /homeassistant/configuration.yaml under modbus_oneway_control:.",
         "data": {
           "device": "Address (serial path or tcp://host:port)",
           "baud_rate": "Baud rate (serial only)",
-          "name": "Display name (optional, e.g. Amp A)"
+          "name": "Display name (optional)",
+          "persistent_tcp": "Keep TCP connection persistent (TCP only)"
         }
       }
     },
@@ -23,10 +24,12 @@
     "step": {
       "init": {
         "title": "Modbus One-Way Control Options",
+        "description": "Change address / baud rate / display name. For TCP you may choose whether to keep the connection persistent.",
         "data": {
           "device": "Address (serial path or tcp://host:port)",
           "baud_rate": "Baud rate (serial only)",
-          "name": "Display name (optional)"
+          "name": "Display name (optional)",
+          "persistent_tcp": "Keep TCP connection persistent (TCP only)"
         }
       }
     },

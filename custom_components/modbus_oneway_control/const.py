@@ -33,5 +33,9 @@ MAX_BAUD = 115200
 TRANSPORT_SERIAL = "serial"
 TRANSPORT_TCP = "tcp"
 
+# TCP 是否保持长连接（默认 True：与服务端始终连接、断开自动重连）
+CONF_PERSISTENT = "persistent_tcp"
+DEFAULT_PERSISTENT = True
+
 # 超时（秒）
 SERIAL_TIMEOUT = 2.0

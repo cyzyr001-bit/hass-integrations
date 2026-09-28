@@ -31,7 +31,9 @@ from .const import (
     CONF_NAME,
     CONF_OFF_CODE,
     CONF_ON_CODE,
+    CONF_PERSISTENT,
     DEFAULT_BAUD,
+    DEFAULT_PERSISTENT,
     DOMAIN,
 )
 from .serial_api import Channel, SerialWriter, parse_code
@@ -270,7 +272,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # 依据地址选择传输方式：tcp://... → TCP；其余 → 串口
     use_tcp = is_tcp(device)
     if use_tcp:
-        writer = TcpWriter(hass, device)
+        persistent = bool(data.get(CONF_PERSISTENT, DEFAULT_PERSISTENT))
+        writer = TcpWriter(hass, device, persistent=persistent)
     else:
         writer = SerialWriter(hass, device, baud)
     try:
@@ -288,6 +291,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         "baud": baud,
         "transport": "tcp" if use_tcp else "serial",
     }
+    if use_tcp:
+        hass.data[DOMAIN][entry.entry_id]["persistent"] = bool(
+            data.get(CONF_PERSISTENT, DEFAULT_PERSISTENT)
+        )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))

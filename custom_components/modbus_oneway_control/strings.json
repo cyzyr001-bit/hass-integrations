@@ -3,11 +3,12 @@
     "step": {
       "user": {
         "title": "modbus单向控制",
-        "description": "**每台设备添加一次本集成**。地址填 USB 串口标识符（如 /dev/ttyUSB0）或 **TCP 地址（如 tcp://192.168.110.158:6677）**。\n\n填 tcp:// 时按 **TCP 客户端直连**发送，波特率不生效；填串口路径时按 USB 转串口发送。\n\n开关类（channels）与按钮类（buttons）在 /homeassistant/configuration.yaml 的 modbus_oneway_control: 段里配置（写多少条就出现多少个实体）。",
+        "description": "**每台设备添加一次本集成**。地址填 USB 串口标识符（如 /dev/ttyUSB0）或 **TCP 地址（如 tcp://192.168.110.158:6677）**。\n\n填 tcp:// 时按 **TCP 通信**发送（波特率不生效）：默认**长连接**（与服务端保持连接、断开自动重连，可在选项中关闭改为发完即关）；填串口路径时按 USB 转串口发送。\n\n开关类（channels）与按钮类（buttons）在 /homeassistant/configuration.yaml 的 modbus_oneway_control: 段里配置（写多少条就出现多少个实体）。",
         "data": {
           "device": "地址（串口标识符 或 tcp://主机:端口）",
           "baud_rate": "波特率（仅串口有效）",
-          "name": "显示名（可选，如 功放A）"
+          "name": "显示名（可选，如 功放A）",
+          "persistent_tcp": "TCP 保持长连接（仅 TCP 生效）"
         }
       }
     },
@@ -23,10 +24,12 @@
     "step": {
       "init": {
         "title": "modbus单向控制 选项",
+        "description": "修改地址 / 波特率 / 显示名。TCP 时可选择是否保持长连接。",
         "data": {
           "device": "地址（串口标识符 或 tcp://主机:端口）",
           "baud_rate": "波特率（仅串口有效）",
-          "name": "显示名（可选）"
+          "name": "显示名（可选）",
+          "persistent_tcp": "TCP 保持长连接（仅 TCP 生效）"
         }
       }
     },
