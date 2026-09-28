@@ -2,7 +2,7 @@
   "domain": "modbus_oneway_control",
   "name": "modbus单向控制",
   "version": "1.2.0",
-  "documentation": "http://www.hfznjj.cn/",
+  "documentation": "https://github.com/cyzyr001-bit/hass-integrations/tree/main/custom_components/modbus_oneway_control",
   "dependencies": [],
   "codeowners": [],
   "requirements": [],
