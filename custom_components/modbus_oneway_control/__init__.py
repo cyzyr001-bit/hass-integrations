@@ -35,6 +35,7 @@ from .const import (
     DOMAIN,
 )
 from .serial_api import Channel, SerialWriter, parse_code
+from .tcp_api import TcpWriter, is_tcp
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -237,7 +238,7 @@ def _async_log_serial_ports(hass: HomeAssistant) -> None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """建立配置条目：打开串口 + 建立实体。"""
+    """建立配置条目：打开传输（串口/TCP）+ 建立实体。"""
     hass.data.setdefault(DOMAIN, {})
     data = {**entry.data, **entry.options}
     device = data.get(CONF_DEVICE)
@@ -266,11 +267,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             [b.name for b in buttons],
         )
 
-    writer = SerialWriter(hass, device, baud)
+    # 依据地址选择传输方式：tcp://... → TCP；其余 → 串口
+    use_tcp = is_tcp(device)
+    if use_tcp:
+        writer = TcpWriter(hass, device)
+    else:
+        writer = SerialWriter(hass, device, baud)
     try:
         await writer.connect()
     except Exception as err:  # noqa: BLE001
-        _LOGGER.error("打开串口 %s 失败：%s（稍后发送时会重试）", device, err)
+        _LOGGER.error(
+            "连接 %s 失败：%s（稍后发送时会重试）", device, err
+        )
 
     hass.data[DOMAIN][entry.entry_id] = {
         "writer": writer,
@@ -278,6 +286,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         "buttons": buttons,
         "device": device,
         "baud": baud,
+        "transport": "tcp" if use_tcp else "serial",
     }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

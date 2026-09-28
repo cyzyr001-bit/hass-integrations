@@ -3,19 +3,20 @@
     "step": {
       "user": {
         "title": "Modbus One-Way Control",
-        "description": "**Add this integration once per USB device.** Enter that USB device's path and baud rate (the display name is optional, useful to tell identical adapters apart).\n\nSwitches (`channels`) and buttons (`buttons`) go in /homeassistant/configuration.yaml under modbus_oneway_control:. Use `devices` to group entries per adapter. Each entry becomes one entity.",
+        "description": "**Add this integration once per device.** Enter a serial device path (e.g. /dev/ttyUSB0) or a **TCP address (e.g. tcp://192.168.110.158:6677)**.\n\nWith `tcp://` it sends over a **TCP client** connection (baud rate is ignored); with a path it uses the USB serial port.\n\nSwitches (`channels`) and buttons (`buttons`) go in /homeassistant/configuration.yaml under modbus_oneway_control:.",
         "data": {
-          "device": "USB device path (e.g. /dev/ttyUSB0)",
-          "baud_rate": "Baud rate",
+          "device": "Address (serial path or tcp://host:port)",
+          "baud_rate": "Baud rate (serial only)",
           "name": "Display name (optional, e.g. Amp A)"
         }
       }
     },
     "error": {
-      "invalid_device": "Please enter a valid USB device path."
+      "invalid_device": "Enter an address: a serial path (e.g. /dev/ttyUSB0) or tcp://host:port.",
+      "invalid_tcp": "Bad TCP address, expected e.g. tcp://192.168.110.158:6677."
     },
     "abort": {
-      "already_configured": "This USB device is already configured."
+      "already_configured": "This address is already configured."
     }
   },
   "options": {
@@ -23,11 +24,15 @@
       "init": {
         "title": "Modbus One-Way Control Options",
         "data": {
-          "device": "USB device path (e.g. /dev/ttyUSB0)",
-          "baud_rate": "Baud rate",
+          "device": "Address (serial path or tcp://host:port)",
+          "baud_rate": "Baud rate (serial only)",
           "name": "Display name (optional)"
         }
       }
+    },
+    "error": {
+      "invalid_device": "Enter an address: a serial path (e.g. /dev/ttyUSB0) or tcp://host:port.",
+      "invalid_tcp": "Bad TCP address, expected e.g. tcp://192.168.110.158:6677."
     }
   }
 }

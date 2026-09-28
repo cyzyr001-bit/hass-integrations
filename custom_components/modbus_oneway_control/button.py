@@ -51,9 +51,9 @@ class ModbusOnewayButton(ButtonEntity):
         self._device = device
         self._channel = channel
         self._attr_name = channel.name
-        self._attr_unique_id = f"{device}_btn_{index}_{channel.name}"
+        self._attr_unique_id = f"{entry.entry_id}_btn_{index}"
         self._attr_device_info = {
-            "identifiers": {(DOMAIN, device)},
+            "identifiers": {(DOMAIN, entry.entry_id)},
             "name": entry.title or "modbus单向控制",
             "manufacturer": "智道物联",
             "model": "USB-RS232/485 单向控制",

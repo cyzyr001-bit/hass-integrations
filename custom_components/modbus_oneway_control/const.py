@@ -8,7 +8,7 @@
 DOMAIN = "modbus_oneway_control"
 
 # ---- 配置条目（config entry）字段 ----
-CONF_DEVICE = "device"          # USB 硬件标识符，如 /dev/ttyUSB0
+CONF_DEVICE = "device"          # 硬件标识符：串口路径(/dev/...) 或 TCP 地址(tcp://host:port)
 CONF_BAUD = "baud_rate"         # 波特率
 CONF_NAME = "name"              # 本台设备的显示名（多台同型号 USB 时便于区分）
 
@@ -28,6 +28,10 @@ CONF_COMMAND = "command"        # 按钮类：按下时发送的那一条命令
 
 MIN_BAUD = 1200
 MAX_BAUD = 115200
+
+# 传输类型
+TRANSPORT_SERIAL = "serial"
+TRANSPORT_TCP = "tcp"
 
 # 超时（秒）
 SERIAL_TIMEOUT = 2.0
