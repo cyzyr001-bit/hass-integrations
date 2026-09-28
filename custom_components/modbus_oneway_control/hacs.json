@@ -1,0 +1,6 @@
+{
+  "name": "Modbus 单向控制",
+  "content_in_root": false,
+  "country": "CN",
+  "homeassistant": "2023.1.0"
+}

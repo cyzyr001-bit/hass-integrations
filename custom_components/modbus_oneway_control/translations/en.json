@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Modbus One-Way Control",
+        "description": "**Add this integration once per USB device.** Enter that USB device's path and baud rate (the display name is optional, useful to tell identical adapters apart).\n\nSwitches (`channels`) and buttons (`buttons`) go in /homeassistant/configuration.yaml under modbus_oneway_control:. Use `devices` to group entries per adapter. Each entry becomes one entity.",
+        "data": {
+          "device": "USB device path (e.g. /dev/ttyUSB0)",
+          "baud_rate": "Baud rate",
+          "name": "Display name (optional, e.g. Amp A)"
+        }
+      }
+    },
+    "error": {
+      "invalid_device": "Please enter a valid USB device path."
+    },
+    "abort": {
+      "already_configured": "This USB device is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Modbus One-Way Control Options",
+        "data": {
+          "device": "USB device path (e.g. /dev/ttyUSB0)",
+          "baud_rate": "Baud rate",
+          "name": "Display name (optional)"
+        }
+      }
+    }
+  }
+}

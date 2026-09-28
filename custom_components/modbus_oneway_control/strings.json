@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "modbus单向控制",
+        "description": "**每台 USB 设备添加一次本集成**。填写该 USB 的硬件标识符和波特率（显示名可选，用来区分同型号设备）。\n\n开关类（channels）与按钮类（buttons）在 /homeassistant/configuration.yaml 的 modbus_oneway_control: 段里配置（写多少条就出现多少个实体）。多台设备用 devices 分组。",
+        "data": {
+          "device": "USB 硬件标识符（如 /dev/ttyUSB0）",
+          "baud_rate": "波特率",
+          "name": "显示名（可选，如 功放A）"
+        }
+      }
+    },
+    "error": {
+      "invalid_device": "请填写有效的 USB 硬件标识符。"
+    },
+    "abort": {
+      "already_configured": "该 USB 设备已配置。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "modbus单向控制 选项",
+        "data": {
+          "device": "USB 硬件标识符（如 /dev/ttyUSB0）",
+          "baud_rate": "波特率",
+          "name": "显示名（可选）"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Home Assistant 集成合集
 
-本项目集中存放 6 个自研的 Home Assistant 自定义集成，主要面向国内常见的 485 网转串 / TCP 智能硬件设备，以及涂鸦（Tuya）云灯组。
+本项目集中存放 7 个自研的 Home Assistant 自定义集成，主要面向国内常见的 485 网转串 / TCP 智能硬件设备，以及涂鸦（Tuya）云灯组。
 
 ## 集成列表
 
@@ -12,6 +12,7 @@
 | `custom_components/smart_lighting_485` | TCP 可控硅调光 (CNHQ) | 485 可控硅调光，多通道亮度控制 | 本地 TCP (Modbus RTU over TCP) |
 | `custom_components/tuya_cloud_groups` | Tuya Cloud Groups | 涂鸦云灯组（按账号家庭自动同步） | 涂鸦开放平台 API（云） |
 | `custom_components/tuya_web_groups` | Tuya Web Groups | 涂鸦灯组（基于 Web API） | 涂鸦 Web API（云） |
+| `custom_components/modbus_oneway_control` | Modbus 单向控制 | USB 转 232/485 单向控制功放/时序器；开关类 + 按钮类，只发送不反馈 | USB 转串口（本地） |
 
 ## 安装方式
 
@@ -28,7 +29,7 @@ cp -r custom_components/forick_panel /config/custom_components/
 
 ### 方式二：HACS
 
-> ⚠️ HACS 的自定义仓库「一个仓库只识别一个集成」。本仓库是 monorepo，含 6 个集成，**HACS 直接添加整个仓库只会识别根目录下的一个集成**。
+> ⚠️ HACS 的自定义仓库「一个仓库只识别一个集成」。本仓库是 monorepo，含 7 个集成，**HACS 直接添加整个仓库只会识别根目录下的一个集成**。
 >
 > 如需通过 HACS 安装，建议：
 > - 在 HACS 中以「自定义仓库」添加本仓库，类型选 **Integration**，仓库路径填写对应集成的子目录；或
