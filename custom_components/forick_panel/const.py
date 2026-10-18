@@ -64,6 +64,28 @@ FAN_LOW = 1
 FAN_MEDIUM = 2
 FAN_HIGH = 3
 
+# HA 风速模式名（使用 HA 标准值，前端自动本地化为 低/中/高）
+FAN_MODE_LOW = "low"
+FAN_MODE_MEDIUM = "middle"
+FAN_MODE_HIGH = "high"
+
+FAN_MODES = (FAN_MODE_LOW, FAN_MODE_MEDIUM, FAN_MODE_HIGH)
+
+# 寄存器值 → HA 风速模式
+FAN_DP_TO_MODE = {
+    FAN_LOW: FAN_MODE_LOW,
+    FAN_MEDIUM: FAN_MODE_MEDIUM,
+    FAN_HIGH: FAN_MODE_HIGH,
+}
+
+# HA 风速模式 → 寄存器值（兼容 medium 写法）
+FAN_MODE_TO_DP = {
+    FAN_MODE_LOW: FAN_LOW,
+    FAN_MODE_MEDIUM: FAN_MEDIUM,
+    "medium": FAN_MEDIUM,
+    FAN_MODE_HIGH: FAN_HIGH,
+}
+
 # 写入后保持"乐观状态"的兜底秒数；实际 TTL 由 coordinator 按 scan_interval 动态计算
 OPTIMISTIC_TTL_MIN = 10.0
 

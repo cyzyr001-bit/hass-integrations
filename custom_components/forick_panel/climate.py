@@ -24,6 +24,9 @@ from .const import (
     DEVICE_NAME,
     DOMAIN,
     MANUFACTURER,
+    FAN_DP_TO_MODE,
+    FAN_MODE_TO_DP,
+    FAN_MODES,
     MANUFACTURER_URL,
     MODEL,
     REG_AC_FAN,
@@ -123,7 +126,7 @@ class ForickAirConditioner(_BaseClimate):
             | ClimateEntityFeature.TURN_OFF
             | ClimateEntityFeature.TURN_ON
         )
-        self._attr_fan_modes = ["低速", "中速", "高速"]
+        self._attr_fan_modes = list(FAN_MODES)
 
     @property
     def _power_reg(self) -> int:
@@ -162,7 +165,7 @@ class ForickAirConditioner(_BaseClimate):
     @property
     def fan_mode(self) -> str | None:
         fan = self.coordinator._read(REG_AC_FAN) & 0xFF
-        return {1: "低速", 2: "中速", 3: "高速"}.get(fan)
+        return FAN_DP_TO_MODE.get(fan)
 
     async def async_set_temperature(self, **kwargs) -> None:
         temp = kwargs.get(ATTR_TEMPERATURE)
@@ -192,8 +195,7 @@ class ForickAirConditioner(_BaseClimate):
         await self.coordinator.async_write(REG_AC_POWER, 1)
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:
-        fan_map = {"低速": 1, "中速": 2, "高速": 3}
-        value = fan_map.get(fan_mode)
+        value = FAN_MODE_TO_DP.get(fan_mode)
         if value is not None:
             # 面板规则：空调关闭时风速写保护，先开机再写风速
             if not self._is_on:
@@ -279,7 +281,7 @@ class ForickFreshAir(_BaseClimate):
             | ClimateEntityFeature.TURN_OFF
             | ClimateEntityFeature.TURN_ON
         )
-        self._attr_fan_modes = ["低速", "中速", "高速"]
+        self._attr_fan_modes = list(FAN_MODES)
         # 新风无温度设定，去掉温度相关属性
         self._attr_min_temp = None
         self._attr_max_temp = None
@@ -299,7 +301,7 @@ class ForickFreshAir(_BaseClimate):
     @property
     def fan_mode(self) -> str | None:
         fan = self.coordinator._read(REG_FA_FAN) & 0xFF
-        return {1: "低速", 2: "中速", 3: "高速"}.get(fan)
+        return FAN_DP_TO_MODE.get(fan)
 
     async def async_turn_on(self) -> None:
         await self.coordinator.async_write(REG_FA_POWER, 1)
@@ -312,8 +314,7 @@ class ForickFreshAir(_BaseClimate):
             REG_FA_POWER, 1 if hvac_mode == HVACMode.FAN_ONLY else 0)
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:
-        fan_map = {"低速": 1, "中速": 2, "高速": 3}
-        value = fan_map.get(fan_mode)
+        value = FAN_MODE_TO_DP.get(fan_mode)
         if value is not None:
             # 新风关闭时风速写保护，先开机再写风速
             if not self._is_on:
