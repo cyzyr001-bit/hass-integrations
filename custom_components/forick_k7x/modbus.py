@@ -13,11 +13,38 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import socket
 import struct
+import time
 
 from .const import DEFAULT_PORT
 
 _LOGGER = logging.getLogger(__name__)
+
+# TCP keepalive：让内核定期探测，尽早发现被 NAT/网关静默丢弃的半开连接
+KEEPALIVE_IDLE = 30       # 首次探测前的空闲秒数
+KEEPALIVE_INTERVAL = 10   # 探测间隔
+KEEPALIVE_COUNT = 3       # 连续失败次数后判定断开
+
+# 总线监听连接长时间无数据时主动重连（安全网，防止网关静默回收连接）
+MONITOR_IDLE_RECONNECT = 1800
+
+
+def _enable_tcp_keepalive(writer: asyncio.StreamWriter) -> None:
+    """给底层 socket 打开 TCP keepalive（Linux 下可调参数）。"""
+    sock = writer.get_extra_info("socket")
+    if sock is None:
+        return
+    try:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+        if hasattr(socket, "TCP_KEEPIDLE"):
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, KEEPALIVE_IDLE)
+        if hasattr(socket, "TCP_KEEPINTVL"):
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, KEEPALIVE_INTERVAL)
+        if hasattr(socket, "TCP_KEEPCNT"):
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, KEEPALIVE_COUNT)
+    except OSError as err:  # noqa: BLE001
+        _LOGGER.debug("设置 TCP keepalive 失败: %s", err)
 
 
 def crc16(data: bytes) -> bytes:
@@ -51,24 +78,31 @@ class ModbusRtuTcpClient:
     # ---------------- 连接管理 ----------------
     @property
     def connected(self) -> bool:
-        return self._writer is not None and not self._writer.is_closing()
+        writer = self._writer
+        if writer is None or writer.is_closing():
+            return False
+        transport = getattr(writer, "transport", None)
+        return transport is None or not transport.is_closing()
 
     async def async_close(self) -> None:
-        if self._writer is not None:
-            try:
-                self._writer.close()
-                await self._writer.wait_closed()
-            except Exception:  # noqa: BLE001
-                pass
+        writer, self._writer = self._writer, None
         self._reader = None
-        self._writer = None
         self._rx.clear()
+        if writer is not None:
+            try:
+                writer.close()
+                await asyncio.wait_for(writer.wait_closed(), timeout=2)
+            except Exception:  # noqa: BLE001
+                transport = getattr(writer, "transport", None)
+                if transport is not None:
+                    transport.abort()
 
     async def _async_connect(self) -> None:
         await self.async_close()
         self._reader, self._writer = await asyncio.wait_for(
             asyncio.open_connection(self._host, self._port), timeout=self._timeout
         )
+        _enable_tcp_keepalive(self._writer)
         _LOGGER.debug("已连接 %s:%s", self._host, self._port)
 
     async def _async_drain(self) -> None:
@@ -251,6 +285,7 @@ class BusMonitor:
         self._rx = bytearray()
         self._running = False
         self._task: asyncio.Task | None = None
+        self._last_rx = 0.0
 
     async def start(self) -> None:
         """启动后台监听循环。"""
@@ -285,19 +320,31 @@ class BusMonitor:
     async def _run(self) -> None:
         while self._running:
             try:
-                self._reader, self._writer = await asyncio.open_connection(
-                    self._host, self._port)
-                _LOGGER.debug("总线监听已连接 %s:%s", self._host, self._port)
+                self._reader, self._writer = await asyncio.wait_for(
+                    asyncio.open_connection(self._host, self._port), timeout=10)
+                _enable_tcp_keepalive(self._writer)
+                self._last_rx = time.monotonic()
+                _LOGGER.info("总线监听已连接 %s:%s", self._host, self._port)
                 while self._running:
-                    chunk = await self._reader.read(256)
-                    if not chunk:
+                    try:
+                        chunk = await asyncio.wait_for(
+                            self._reader.read(256), timeout=MONITOR_IDLE_RECONNECT)
+                    except asyncio.TimeoutError:
+                        # 长时间没有任何广播：主动重连，避免网关静默回收后连接变“假活”
+                        _LOGGER.info("总线监听 %s 秒无数据，主动重连刷新连接",
+                                     MONITOR_IDLE_RECONNECT)
                         break
+                    if not chunk:
+                        _LOGGER.info("总线监听连接被对端关闭，准备重连")
+                        break
+                    self._last_rx = time.monotonic()
                     self._rx.extend(chunk)
                     self._parse_all()
-            except (OSError, asyncio.IncompleteReadError, asyncio.TimeoutError):
-                pass
             except asyncio.CancelledError:
                 raise
+            except Exception as err:  # noqa: BLE001
+                _LOGGER.warning("总线监听异常(%s): %s，2 秒后重连",
+                                type(err).__name__, err)
             finally:
                 await self.async_close()
             if self._running:

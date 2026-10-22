@@ -1,8 +1,8 @@
 {
   "domain": "forick_k7x",
   "name": "八键智能开关(Forick)",
-  "version": "1.0.0",
-  "documentation": "http://www.hfznjj.cn/",
+  "version": "1.1.0",
+  "documentation": "https://github.com/cyzyr001-bit/hass-integrations/tree/main/custom_components/forick_k7x",
   "dependencies": [],
   "codeowners": [],
   "requirements": [],
